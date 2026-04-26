@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>WhatsApp Web Clone PRO</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
+body{display:flex;height:100vh;background:#111b21;color:#e9edef}
+
+.sidebar{width:30%;background:#202c33;display:flex;flex-direction:column}
+.header{padding:15px;background:#202c33;border-bottom:1px solid #2a3942}
+.header h2{color:#00a884}
+
+.search{padding:10px}
+.search input{width:100%;padding:10px;border-radius:8px;border:none;background:#2a3942;color:#fff}
+
+.chat-list{flex:1;overflow:auto}
+.chat{display:flex;align-items:center;padding:12px;border-bottom:1px solid #2a3942;cursor:pointer}
+.chat:hover{background:#2a3942}
+.chat img{width:40px;height:40px;border-radius:50%;margin-right:10px}
+.chat-info{flex:1}
+.chat-info span{display:block;font-size:14px}
+
+.chat-area{flex:1;display:flex;flex-direction:column}
+.chat-header{display:flex;align-items:center;padding:10px;background:#202c33;border-bottom:1px solid #2a3942}
+.chat-header img{width:40px;height:40px;border-radius:50%;margin-right:10px}
+
+.messages{flex:1;padding:20px;overflow:auto;background:#6c5f5f}
+.message{max-width:60%;padding:10px;margin:8px;border-radius:8px;font-size:14px;position:relative}
+.sent{background:#005c4b;margin-left:auto}
+.received{background:#202c33}
+.time{font-size:10px;opacity:0.7;margin-top:5px;text-align:right}
+
+.input-area{display:flex;padding:10px;background:#202c33}
+.input-area input{flex:1;padding:10px;border-radius:20px;border:none;background:#2a3942;color:#fff}
+.input-area button{margin-left:10px;padding:10px;border:none;background:#00a884;color:#fff;border-radius:50%;cursor:pointer}
+
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="header"><h2>WhatsApp</h2></div>
+
+  <div class="search">
+    <input placeholder="Pesquisar ou começar nova conversa">
+  </div>
+
+  <div class="chat-list">
+    <div class="chat" onclick="abrirChat('João','https://i.pravatar.cc/40?1')">
+      <img src="https://i.pravatar.cc/40?1">
+      <div class="chat-info"><span>João</span></div>
+    </div>
+
+    <div class="chat" onclick="abrirChat('Maria','https://i.pravatar.cc/40?2')">
+      <img src="https://i.pravatar.cc/40?2">
+      <div class="chat-info"><span>Maria</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="chat-area">
+  <div class="chat-header" id="chatHeader">
+    <img src="https://i.pravatar.cc/40">
+    <span>Selecione um chat</span>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <input id="msgInput" placeholder="Digite uma mensagem">
+    <button onclick="enviar()">➤</button>
+  </div>
+</div>
+
+<script>
+let chatAtual = '';
+
+function abrirChat(nome,foto){
+  chatAtual = nome;
+  document.getElementById('chatHeader').innerHTML = `<img src="${foto}"><span>${nome}</span>`;
+  document.getElementById('messages').innerHTML = '';
+}
+
+function hora(){
+  const d = new Date();
+  return d.getHours()+":"+String(d.getMinutes()).padStart(2,'0');
+}
+
+function enviar(){
+  const input = document.getElementById('msgInput');
+  const texto = input.value;
+  if(!texto) return;
+
+  criarMensagem(texto,'sent');
+  input.value='';
+
+  setTimeout(()=>{
+    criarMensagem('Ok 👍','received');
+  },1000);
+}
+
+function criarMensagem(texto,tipo){
+  const div = document.createElement('div');
+  div.classList.add('message',tipo);
+  div.innerHTML = `${texto}<div class="time">${hora()}</div>`;
+  document.getElementById('messages').appendChild(div);
+  document.getElementById('messages').scrollTop = 99999;
+}
+</script>
+
+</body>
+</html>
